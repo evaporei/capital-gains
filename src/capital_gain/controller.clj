@@ -10,7 +10,6 @@
         new-weighted-avg (logic/calculate-weighted-avg curr trade)]
     (db/save-stock! storage {:quantity (:quantity trade)
                              :weighted-avg new-weighted-avg})
-  ;; (println (deref (:storage storage)))
     {:tax 0}))
 
 (defn sell-stocks
@@ -31,8 +30,10 @@
 (defn execute-controller
   "Executes controller with storage and user input."
   [storage controller-and-input]
-  (let [[controller input-data] controller-and-input]
-      (controller storage input-data)))
+  (let [[controller input-data] controller-and-input
+        res (controller storage input-data)]
+      ;; (println (deref (:storage storage)))
+      res))
 
 (defn routing
   "Routes to appropriate controller based of map key."
