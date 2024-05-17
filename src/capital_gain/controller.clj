@@ -6,19 +6,28 @@
 (defn buy-stocks
   "Buy stocks"
   [storage trade]
-  ;; (print storage)
-  ;; (print trade)
   (let [curr (db/get-all storage)
         new-weighted-avg (logic/calculate-weighted-avg curr trade)]
     (db/save-stock! storage {:quantity (:quantity trade)
                              :weighted-avg new-weighted-avg})
+  ;; (println (deref (:storage storage)))
     {:tax 0}))
 
 (defn sell-stocks
   "Sell stocks"
   [storage trade]
-  (print "sell")
-  trade)
+  (let [{weighted-avg :weighted-avg
+         loss :loss} (db/get-all storage)
+        new-cost (:unit-cost trade)
+        [action ret] (logic/sell-stock weighted-avg new-cost loss (:quantity trade))]
+    (case action
+      :save-loss
+        (do (db/save-loss! storage ret)
+            {:tax 0})
+      :pay-tax
+        (do (db/pay-tax! storage ret)
+            {:tax ret})
+      nil)))
 
 ;; review
 (defn execute-controller
