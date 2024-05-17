@@ -10,12 +10,27 @@
     (/ (+ (* curr-quantity curr-weighted-avg) (* new-quantity new-unit-cost))
        (+ curr-quantity new-quantity))))
 
+(defn calculate-tax
+  [new-cost weighted-avg quantity total-amount]
+  (if (> total-amount 20000)
+    (* (* quantity (- new-cost weighted-avg)) 0.2)
+    0))
 
 (defn sell-stock
   [weighted-avg new-cost loss quantity]
-  (if (<= new-cost weighted-avg)
-    [:save-loss loss]
-    (let [new-loss (* new-cost quantity)]
-      (if (>= new-loss loss)
-        [:save-loss (- new-loss loss)]
-        [:pay-tax 50]))))
+  (let [total-amount (* new-cost quantity)]
+    (if (<= new-cost weighted-avg)
+      ;; loss
+      {:new-loss (- total-amount loss)
+       :tax 0}
+      ;; profit
+      (if (<= total-amount loss)
+        ;; just subtract from prev loss
+        {:new-loss (- loss total-amount)
+         :tax 0}
+        ;; overcome prev loss, pay tax
+        {:new-loss 0
+         :tax (calculate-tax new-cost
+                             weighted-avg
+                             quantity
+                             total-amount)}))))

@@ -11,13 +11,10 @@
 
 (defn save-stock!
   [storage stock]
-  (doseq [[k v] stock]
-    (storage/insert-key! storage k v)))
+  (storage/insert-key! storage :weighted-avg (:weighted-avg stock))
+  (storage/update-key! storage :quantity #(+ (or % 0)
+                                             (:quantity stock))))
 
 (defn save-loss!
   [storage loss]
   (storage/insert-key! storage :loss loss))
-
-(defn pay-tax!
-  [storage tax]
-  (storage/insert-key! storage :tax tax))

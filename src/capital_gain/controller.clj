@@ -19,15 +19,13 @@
   (let [{weighted-avg :weighted-avg
          loss :loss} (db/get-all storage)
         new-cost (:unit-cost trade)
-        [action ret] (logic/sell-stock weighted-avg new-cost loss (:quantity trade))]
-    (case action
-      :save-loss
-        (do (db/save-loss! storage ret)
-            {:tax 0})
-      :pay-tax
-        (do (db/pay-tax! storage ret)
-            {:tax ret})
-      nil)))
+        {tax :tax
+         loss :new-loss} (logic/sell-stock weighted-avg
+                                           new-cost
+                                           loss
+                                           (:quantity trade))]
+    (db/save-loss! storage loss)
+    {:tax tax}))
 
 ;; review
 (defn execute-controller

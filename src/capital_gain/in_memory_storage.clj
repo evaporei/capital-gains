@@ -12,7 +12,9 @@
   (get-key-with-default [_this k default]
     (k @storage default))
   (has-key? [_this k]
-    (contains? @storage k)))
+    (contains? @storage k))
+  (clear! [_this]
+    (reset! storage {})))
 
 (defn new-in-memory-storage
   "Creates a new InMemoryStorage with an atom for concurrency safety."

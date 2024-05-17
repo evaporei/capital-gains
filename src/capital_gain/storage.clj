@@ -6,4 +6,5 @@
   (update-key! [this k update-fn] "Updates via custom fn a key's value of Storage.")
   (get-key [this k] "Gets key of Storage.")
   (get-key-with-default [this k default] "Gets key with default of Storage.")
-  (has-key? [this k] "Checks if key exists in Storage."))
+  (has-key? [this k] "Checks if key exists in Storage.")
+  (clear! [this] "Clears the storage so it's empty"))
