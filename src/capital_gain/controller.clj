@@ -1,14 +1,18 @@
 (ns capital-gain.controller
-  (:require ;;[capital-gain.business-logic :as business-logic]
+  (:require [capital-gain.business-logic :as logic]
             [capital-gain.adapters :as adapters]
             [capital-gain.database :as db]))
 
 (defn buy-stocks
   "Buy stocks"
   [storage trade]
-  ;; (db/buy-stocks! storage trade)
-  (print "buy")
-  trade)
+  ;; (print storage)
+  ;; (print trade)
+  (let [curr (db/get-all storage)
+        new-weighted-avg (logic/calculate-weighted-avg curr trade)]
+    (db/save-stock! storage {:quantity (:quantity trade)
+                             :weighted-avg new-weighted-avg})
+    {:tax 0}))
 
 (defn sell-stocks
   "Sell stocks"
