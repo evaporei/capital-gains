@@ -1,7 +1,8 @@
 (ns capital-gain.core
-  (:gen-class))
+  (:gen-class)
+    (:require [capital-gain.ports :as ports]))
 
 (defn -main
-  "I don't do a whole lot ... yet."
-  [& args]
-  (println "Hello, World!"))
+  "Starts the application via CLI with stdin."
+  [& _]
+  (ports/cli-stdin!))
