@@ -20,21 +20,14 @@
   [weighted-avg new-cost loss quantity]
   (let [total-amount (* new-cost quantity)
         profit (* quantity (- new-cost weighted-avg))]
-    ;; (print "total-amount:")
-    ;; (println total-amount)
-    (if (<= new-cost weighted-avg)
-      ;; loss
+    (if (or (<= new-cost weighted-avg) ;; loss
+            (<= total-amount loss)) ;; profit, need to subtract loss
       {:new-loss (- loss profit)
        :tax 0}
-      ;; profit
-      (if (<= total-amount loss)
-        ;; just subtract from prev loss
-        {:new-loss (- loss profit)
-         :tax 0}
-        ;; overcome prev loss, pay tax
-        {:new-loss 0
-         :tax (calculate-tax new-cost
-                             weighted-avg
-                             quantity
-                             total-amount
-                             loss)}))))
+      ;; overcome prev loss, pay tax
+      {:new-loss 0
+       :tax (calculate-tax new-cost
+                           weighted-avg
+                           quantity
+                           total-amount
+                           loss)})))
