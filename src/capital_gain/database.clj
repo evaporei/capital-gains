@@ -15,6 +15,7 @@
   (storage/update-key! storage :quantity #(+ (or % 0)
                                              (:quantity stock))))
 
-(defn save-loss!
-  [storage loss]
-  (storage/insert-key! storage :loss loss))
+(defn sell-stock!
+  [storage loss stock]
+  (storage/insert-key! storage :loss loss)
+  (storage/update-key! storage :quantity #(- % (:quantity stock))))

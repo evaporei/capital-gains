@@ -23,7 +23,7 @@
                                            new-cost
                                            loss
                                            (:quantity trade))]
-    (db/save-loss! storage loss)
+    (db/sell-stock! storage loss trade)
     {:tax tax}))
 
 ;; review
@@ -32,7 +32,7 @@
   [storage controller-and-input]
   (let [[controller input-data] controller-and-input
         res (controller storage input-data)]
-      ;; (println (deref (:storage storage)))
+      (println (deref (:storage storage)))
       res))
 
 (defn routing
