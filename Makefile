@@ -11,7 +11,7 @@ test:
 	@docker run capital-gain-test
 
 lint:
-	@docker run -v $(shell pwd)/src:/src -v $(shell pwd)/test:/test --rm borkdude/clj-kondo clj-kondo --lint src test
+	@docker run -v $(PWD)/src:/src -v $(PWD)/test:/test --rm cljkondo/clj-kondo clj-kondo --lint src test
 
 
 .PHONY: build-app run build-test test lint

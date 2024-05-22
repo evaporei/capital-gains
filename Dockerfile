@@ -1,4 +1,4 @@
-FROM clojure:alpine AS base
+FROM clojure AS base
 WORKDIR /capital-gain
 COPY project.clj project.clj
 RUN lein deps
