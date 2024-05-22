@@ -10,11 +10,10 @@
        (+ curr-quantity new-quantity))))
 
 (defn calculate-tax
-  [new-cost weighted-avg quantity total-amount loss]
-  (let [profit (* quantity (- new-cost weighted-avg))]
-    (if (> total-amount 20000)
-      (* (- profit loss) 0.2)
-      0)))
+  [total-amount profit loss]
+  (if (> total-amount 20000)
+    (* (- profit loss) 0.2)
+    0))
 
 (defn calculate-loss
   [weighted-avg new-cost loss quantity]
@@ -26,8 +25,6 @@
        :tax 0}
       ;; overcome prev loss, pay tax
       {:new-loss 0
-       :tax (calculate-tax new-cost
-                           weighted-avg
-                           quantity
-                           total-amount
+       :tax (calculate-tax total-amount 
+                           profit
                            loss)})))

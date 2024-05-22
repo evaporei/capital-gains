@@ -4,7 +4,7 @@
             [capital-gain.database :as db]))
 
 (defn buy-stocks
-  "Buy stocks controller"
+  "Buy stocks controller."
   [storage trade]
   (let [curr-state (db/get-state storage)
         new-weighted-avg (logic/calculate-weighted-avg curr-state trade)]
@@ -13,7 +13,7 @@
     {:tax 0}))
 
 (defn sell-stocks
-  "Sell stocks controller"
+  "Sell stocks controller."
   [storage trade]
   (let [{weighted-avg :weighted-avg
          loss :loss} (db/get-state storage)
