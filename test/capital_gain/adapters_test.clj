@@ -13,4 +13,3 @@
     (let [edn {:very-cool "data"}
           expected-json-str "{\"very-cool\":\"data\"}\n"]
       (is (= (edn->json edn) expected-json-str)))))
-

@@ -13,8 +13,8 @@
     (doseq [input-line (line-seq (java.io.BufferedReader. *in*))]
       (swap! buffer str input-line)
       (when (includes? @buffer "]")
-          (->> @buffer
-               (controller storage)
-               print)
-          (storage/clear! storage)
-          (reset! buffer "")))))
+        (->> @buffer
+             (controller storage)
+             print)
+        (storage/clear! storage)
+        (reset! buffer "")))))

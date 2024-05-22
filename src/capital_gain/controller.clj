@@ -32,9 +32,9 @@
   [storage controller-and-input]
   (let [[controller input-data] controller-and-input
         res (controller storage input-data)]
-      (print "db-state ")
-      (println (deref (:storage storage)))
-      res))
+    (print "db-state ")
+    (println (deref (:storage storage)))
+    res))
 
 (defn routing
   "Routes to appropriate controller based of map key."
@@ -48,7 +48,7 @@
 
 (defn controller
   "Adapts and routes the user input to the correct controller, and executes it.
-  It returns the JSON string just as it received."
+  It returns a JSON string with the result."
   [storage input]
   (->> input
        adapters/json->edn

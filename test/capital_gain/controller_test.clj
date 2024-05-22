@@ -10,18 +10,18 @@
 
 (deftest case-1
   (testing "Should perform all trade operations and save it on storage"
-    (let [operation0 {:operation "buy" :unit-cost 10.00 :quantity 100}
-          operation1 {:operation "sell" :unit-cost 15.00 :quantity 50}
-          operation2 {:operation "sell" :unit-cost 15.00 :quantity 50}
+    (let [operations [{:operation "buy" :unit-cost 10.00 :quantity 100}
+                      {:operation "sell" :unit-cost 15.00 :quantity 50}
+                      {:operation "sell" :unit-cost 15.00 :quantity 50}]
           storage (new-in-memory-storage)
           db-state0 {:weighted-avg 10.0 :quantity 100 :loss 0}
           db-state1 {:weighted-avg 10.0 :quantity 50 :loss 0}
           db-state2 {:weighted-avg 10.0 :quantity 0 :loss 0}]
-      (is (= (buy-stocks storage operation0) {:tax 0}))
+      (is (= (buy-stocks storage (first operations)) {:tax 0}))
       (is (= (db/get-state storage) db-state0))
-      (is (= (sell-stocks storage operation1) {:tax 0}))
+      (is (= (sell-stocks storage (second operations)) {:tax 0}))
       (is (= (db/get-state storage) db-state1))
-      (is (= (sell-stocks storage operation2) {:tax 0}))
+      (is (= (sell-stocks storage (nth operations 2)) {:tax 0}))
       (is (= (db/get-state storage) db-state2)))))
 
 (deftest case-2
@@ -161,8 +161,7 @@
           operations [{:operation "buy", :unit-cost 10.00, :quantity 10000}
                       {:operation "sell", :unit-cost 50.00, :quantity 10000}
                       {:operation "buy", :unit-cost 20.00, :quantity 10000}
-                      {:operation "sell", :unit-cost 50.00, :quantity 10000}
-                      ]
+                      {:operation "sell", :unit-cost 50.00, :quantity 10000}]
           db-state0 {:weighted-avg 10.0 :quantity 10000 :loss 0}
           db-state1 {:weighted-avg 10.0 :quantity 0 :loss 0}
           db-state2 {:weighted-avg 20.0 :quantity 10000 :loss 0}

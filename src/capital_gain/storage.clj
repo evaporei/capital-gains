@@ -1,5 +1,5 @@
 (ns capital-gain.storage)
- 
+
 (defprotocol Storage
   "Protocol for saving/retrieving data from a Storage."
   (set-key! [this new-key new-value] "Sets value in key of Storage.")

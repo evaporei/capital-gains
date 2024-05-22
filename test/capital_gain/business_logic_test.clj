@@ -1,7 +1,7 @@
 (ns capital-gain.business-logic-test
-    (:require [clojure.test :refer [deftest is testing]]
-              [capital-gain.business-logic :refer [calculate-weighted-avg
-                                                   calculate-loss]]))
+  (:require [clojure.test :refer [deftest is testing]]
+            [capital-gain.business-logic :refer [calculate-weighted-avg
+                                                 calculate-loss]]))
 
 (deftest calculate-weighted-avg-wout-curr
   (testing "Should calculate weighted average with empty current values"
