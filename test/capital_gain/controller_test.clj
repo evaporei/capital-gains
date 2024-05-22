@@ -9,7 +9,7 @@
             [capital-gain.in-memory-storage :refer [new-in-memory-storage]]))
 
 (deftest case-1
-  (testing "Should perform all account operations and save it on storage"
+  (testing "Should perform all trade operations and save it on storage"
     (let [operation0 {:operation "buy" :unit-cost 10.00 :quantity 100}
           operation1 {:operation "sell" :unit-cost 15.00 :quantity 50}
           operation2 {:operation "sell" :unit-cost 15.00 :quantity 50}
@@ -23,6 +23,158 @@
       (is (= (db/get-all storage) db-state1))
       (is (= (sell-stocks storage operation2) {:tax 0}))
       (is (= (db/get-all storage) db-state2)))))
+
+(deftest case-2
+  (testing "Should perform all trade operations and save it on storage"
+    (let [storage (new-in-memory-storage)
+          operations [{:operation "buy", :unit-cost 10.00, :quantity 10000}
+                      {:operation "sell", :unit-cost 20.00, :quantity 5000}
+                      {:operation "sell", :unit-cost 5.00, :quantity 5000}]
+          db-state0 {:weighted-avg 10.0 :quantity 10000 :loss 0}
+          db-state1 {:weighted-avg 10.0 :quantity 5000 :loss 0}
+          db-state2 {:weighted-avg 10.0 :quantity 0 :loss 25000.0}]
+      (is (= (buy-stocks storage (first operations)) {:tax 0}))
+      (is (= (db/get-all storage) db-state0))
+      (is (= (sell-stocks storage (second operations)) {:tax 10000.0}))
+      (is (= (db/get-all storage) db-state1))
+      (is (= (sell-stocks storage (nth operations 2)) {:tax 0}))
+      (is (= (db/get-all storage) db-state2)))))
+(deftest case-3
+  (testing "Should perform all trade operations and save it on storage"
+    (let [storage (new-in-memory-storage)
+          operations [{:operation "buy", :unit-cost 10.00, :quantity 10000}
+                      {:operation "sell", :unit-cost 5.00, :quantity 5000}
+                      {:operation "sell", :unit-cost 20.00, :quantity 3000}]
+          db-state0 {:weighted-avg 10.0 :quantity 10000 :loss 0}
+          db-state1 {:weighted-avg 10.0 :quantity 5000 :loss 25000.0}
+          db-state2 {:weighted-avg 10.0 :quantity 2000 :loss 0}]
+      (is (= (buy-stocks storage (first operations)) {:tax 0}))
+      (is (= (db/get-all storage) db-state0))
+      (is (= (sell-stocks storage (second operations)) {:tax 0}))
+      (is (= (db/get-all storage) db-state1))
+      (is (= (sell-stocks storage (nth operations 2)) {:tax 1000.0}))
+      (is (= (db/get-all storage) db-state2)))))
+
+(deftest case-4
+  (testing "Should perform all trade operations and save it on storage"
+    (let [storage (new-in-memory-storage)
+          operations [{:operation "buy", :unit-cost 10.00, :quantity 10000}
+                      {:operation "buy", :unit-cost 25.00, :quantity 5000}
+                      {:operation "sell", :unit-cost 15.00, :quantity 10000}]
+          db-state0 {:weighted-avg 10.0 :quantity 10000 :loss 0}
+          db-state1 {:weighted-avg 15.0 :quantity 15000 :loss 0}
+          db-state2 {:weighted-avg 15.0 :quantity 5000 :loss 0.0}]
+      (is (= (buy-stocks storage (first operations)) {:tax 0}))
+      (is (= (db/get-all storage) db-state0))
+      (is (= (buy-stocks storage (second operations)) {:tax 0}))
+      (is (= (db/get-all storage) db-state1))
+      (is (= (sell-stocks storage (nth operations 2)) {:tax 0}))
+      (is (= (db/get-all storage) db-state2)))))
+
+(deftest case-5
+  (testing "Should perform all trade operations and save it on storage"
+    (let [storage (new-in-memory-storage)
+          operations [{:operation "buy", :unit-cost 10.00, :quantity 10000}
+                      {:operation "buy", :unit-cost 25.00, :quantity 5000}
+                      {:operation "sell", :unit-cost 15.00, :quantity 10000}
+                      {:operation "sell", :unit-cost 25.00, :quantity 5000}]
+          db-state0 {:weighted-avg 10.0 :quantity 10000 :loss 0}
+          db-state1 {:weighted-avg 15.0 :quantity 15000 :loss 0}
+          db-state2 {:weighted-avg 15.0 :quantity 5000 :loss 0.0}
+          db-state3 {:weighted-avg 15.0 :quantity 0 :loss 0}]
+      (is (= (buy-stocks storage (first operations)) {:tax 0}))
+      (is (= (db/get-all storage) db-state0))
+      (is (= (buy-stocks storage (second operations)) {:tax 0}))
+      (is (= (db/get-all storage) db-state1))
+      (is (= (sell-stocks storage (nth operations 2)) {:tax 0}))
+      (is (= (db/get-all storage) db-state2))
+      (is (= (sell-stocks storage (nth operations 3)) {:tax 10000.0}))
+      (is (= (db/get-all storage) db-state3)))))
+
+(deftest case-6
+  (testing "Should perform all trade operations and save it on storage"
+    (let [storage (new-in-memory-storage)
+          operations [{:operation "buy", :unit-cost 10.00, :quantity 10000}
+                      {:operation "sell", :unit-cost 2.00, :quantity 5000}
+                      {:operation "sell", :unit-cost 20.00, :quantity 2000}
+                      {:operation "sell", :unit-cost 20.00, :quantity 2000}
+                      {:operation "sell", :unit-cost 25.00, :quantity 1000}]
+          db-state0 {:weighted-avg 10.0 :quantity 10000 :loss 0}
+          db-state1 {:weighted-avg 10.0 :quantity 5000 :loss 40000.0}
+          db-state2 {:weighted-avg 10.0 :quantity 3000 :loss 20000.0}
+          db-state3 {:weighted-avg 10.0 :quantity 1000 :loss 0}
+          db-state4 {:weighted-avg 10.0 :quantity 0 :loss 0}]
+      (is (= (buy-stocks storage (first operations)) {:tax 0}))
+      (is (= (db/get-all storage) db-state0))
+      (is (= (sell-stocks storage (second operations)) {:tax 0}))
+      (is (= (db/get-all storage) db-state1))
+      (is (= (sell-stocks storage (nth operations 2)) {:tax 0}))
+      (is (= (db/get-all storage) db-state2))
+      (is (= (sell-stocks storage (nth operations 3)) {:tax 0.0}))
+      (is (= (db/get-all storage) db-state3))
+      (is (= (sell-stocks storage (nth operations 4)) {:tax 3000.0}))
+      (is (= (db/get-all storage) db-state4)))))
+
+(deftest case-7
+  (testing "Should perform all trade operations and save it on storage"
+    (let [storage (new-in-memory-storage)
+          operations [{:operation "buy", :unit-cost 10.00, :quantity 10000}
+                      {:operation "sell", :unit-cost 2.00, :quantity 5000}
+                      {:operation "sell", :unit-cost 20.00, :quantity 2000}
+                      {:operation "sell", :unit-cost 20.00, :quantity 2000}
+                      {:operation "sell", :unit-cost 25.00, :quantity 1000}
+                      {:operation "buy", :unit-cost 20.00, :quantity 10000}
+                      {:operation "sell", :unit-cost 15.00, :quantity 5000}
+                      {:operation "sell", :unit-cost 30.00, :quantity 4350}
+                      {:operation "sell", :unit-cost 30.00, :quantity 650}]
+          db-state0 {:weighted-avg 10.0 :quantity 10000 :loss 0}
+          db-state1 {:weighted-avg 10.0 :quantity 5000 :loss 40000.0}
+          db-state2 {:weighted-avg 10.0 :quantity 3000 :loss 20000.0}
+          db-state3 {:weighted-avg 10.0 :quantity 1000 :loss 0}
+          db-state4 {:weighted-avg 10.0 :quantity 0 :loss 0}
+          db-state5 {:weighted-avg 20.0 :quantity 10000 :loss 0}
+          db-state6 {:weighted-avg 20.0 :quantity 5000 :loss 25000.0}
+          db-state7 {:weighted-avg 20.0 :quantity 650 :loss 0}
+          db-state8 {:weighted-avg 20.0 :quantity 0 :loss 0}]
+      (is (= (buy-stocks storage (first operations)) {:tax 0}))
+      (is (= (db/get-all storage) db-state0))
+      (is (= (sell-stocks storage (second operations)) {:tax 0}))
+      (is (= (db/get-all storage) db-state1))
+      (is (= (sell-stocks storage (nth operations 2)) {:tax 0}))
+      (is (= (db/get-all storage) db-state2))
+      (is (= (sell-stocks storage (nth operations 3)) {:tax 0.0}))
+      (is (= (db/get-all storage) db-state3))
+      (is (= (sell-stocks storage (nth operations 4)) {:tax 3000.0}))
+      (is (= (db/get-all storage) db-state4))
+      (is (= (buy-stocks storage (nth operations 5)) {:tax 0}))
+      (is (= (db/get-all storage) db-state5))
+      (is (= (sell-stocks storage (nth operations 6)) {:tax 0}))
+      (is (= (db/get-all storage) db-state6))
+      (is (= (sell-stocks storage (nth operations 7)) {:tax 3700.0}))
+      (is (= (db/get-all storage) db-state7))
+      (is (= (sell-stocks storage (nth operations 8)) {:tax 0}))
+      (is (= (db/get-all storage) db-state8)))))
+
+(deftest case-8
+  (testing "Should perform all trade operations and save it on storage"
+    (let [storage (new-in-memory-storage)
+          operations [{:operation "buy", :unit-cost 10.00, :quantity 10000}
+                      {:operation "sell", :unit-cost 50.00, :quantity 10000}
+                      {:operation "buy", :unit-cost 20.00, :quantity 10000}
+                      {:operation "sell", :unit-cost 50.00, :quantity 10000}
+                      ]
+          db-state0 {:weighted-avg 10.0 :quantity 10000 :loss 0}
+          db-state1 {:weighted-avg 10.0 :quantity 0 :loss 0}
+          db-state2 {:weighted-avg 20.0 :quantity 10000 :loss 0}
+          db-state3 {:weighted-avg 20.0 :quantity 0 :loss 0}]
+      (is (= (buy-stocks storage (first operations)) {:tax 0}))
+      (is (= (db/get-all storage) db-state0))
+      (is (= (sell-stocks storage (second operations)) {:tax 80000.0}))
+      (is (= (db/get-all storage) db-state1))
+      (is (= (buy-stocks storage (nth operations 2)) {:tax 0}))
+      (is (= (db/get-all storage) db-state2))
+      (is (= (sell-stocks storage (nth operations 3)) {:tax 60000.0}))
+      (is (= (db/get-all storage) db-state3)))))
 
 (deftest controller-integration
   (testing "Should perform all given operations and return the results in JSON format"
