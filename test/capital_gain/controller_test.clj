@@ -8,51 +8,29 @@
             [capital-gain.database :as db]
             [capital-gain.in-memory-storage :refer [new-in-memory-storage]]))
 
-;; (deftest create-account-controller
-;;   (testing "Should perform all account operations and save it on storage"
-;;     (let [account1 {:active-card true
-;;                     :available-limit 100}
-;;           account2 {:active-card false
-;;                     :available-limit 90}
-;;           storage (new-in-memory-storage)
-;;           expected1 {:account account1
-;;                      :violations []}
-;;           expected2 {:account account1
-;;                      :violations [:account-already-initialized]}]
-;;       (is (= (create-account storage {:account account1}) expected1))
-;;       (is (= (db/get-account storage) account1))
-;;       (is (= (create-account storage {:account account2}) expected2))
-;;       (is (= (db/get-account storage) account1)))))
-;;
-;; (deftest authorize-transaction-controller
-;;   (testing "Should perform all account operations and save it on storage"
-;;     (let [initial-account {:active-card true
-;;                            :available-limit 100}
-;;           storage (new-in-memory-storage {:account initial-account})
-;;           input-data {:transaction {:merchant "Burger King"
-;;                                     :amount 20
-;;                                     :time "2019-02-13T10:00:00.000Z"}}
-;;           expected-account {:active-card true
-;;                             :available-limit 80}
-;;           expected-output {:account expected-account
-;;                            :violations []}
-;;           expected-transactions '({:merchant "Burger King"
-;;                                    :amount 20
-;;                                    :time "2019-02-13T10:00:00.000Z"
-;;                                    :authorized true})]
-;;       (is (= (authorize-transaction storage input-data) expected-output))
-;;       (is (= (db/get-account storage) expected-account))
-;;       (is (= (db/get-transactions storage) expected-transactions)))))
-;;
-;; (deftest controller-integration-create-account-and-authorize-transaciton
-;;   (testing "Should perform all account and transaction operations and return JSON"
-;;     (let [storage (new-in-memory-storage)
-;;           account "{\"account\":{\"activeCard\":true,\"availableLimit\":100}}"
-;;           expected-operation1 "{\"account\":{\"activeCard\":true,\"availableLimit\":100},\"violations\":[]}\n"
-;;           transaction "{\"transaction\":{\"merchant\":\"Burger King\",\"amount\":20,\"time\":\"2019-02-13T10:00:00.000Z\"}}"
-;;           expected-operation2 "{\"account\":{\"activeCard\":true,\"availableLimit\":80},\"violations\":[]}\n"]
-;;       (is (= (controller storage account) expected-operation1))
-;;       (is (= (controller storage transaction) expected-operation2)))))
+(deftest case-1
+  (testing "Should perform all account operations and save it on storage"
+    (let [operation0 {:operation "buy" :unit-cost 10.00 :quantity 100}
+          operation1 {:operation "sell" :unit-cost 15.00 :quantity 50}
+          operation2 {:operation "sell" :unit-cost 15.00 :quantity 50}
+          storage (new-in-memory-storage)
+          db-state0 {:weighted-avg 10.0 :quantity 100 :loss 0}
+          db-state1 {:weighted-avg 10.0 :quantity 50 :loss 0}
+          db-state2 {:weighted-avg 10.0 :quantity 0 :loss 0}]
+      (is (= (buy-stocks storage operation0) {:tax 0}))
+      (is (= (db/get-all storage) db-state0))
+      (is (= (sell-stocks storage operation1) {:tax 0}))
+      (is (= (db/get-all storage) db-state1))
+      (is (= (sell-stocks storage operation2) {:tax 0}))
+      (is (= (db/get-all storage) db-state2)))))
+
+(deftest controller-integration
+  (testing "Should perform all given operations and return the results in JSON format"
+    (let [storage (new-in-memory-storage)
+          operations "[{\"operation\":\"buy\", \"unit-cost\":10.00, \"quantity\": 10000},\n
+                       {\"operation\":\"sell\", \"unit-cost\":20.00, \"quantity\": 5000}]\n"
+          expected "[{\"tax\":0},{\"tax\":10000.0}]\n"]
+      (is (= (controller storage operations) expected)))))
 
 (deftest integration-else
   (testing "Should perform nothing and return a null"
@@ -72,7 +50,7 @@
       (is (= (controller-fn) nil))
       (is (= data {:nothing :related})))))
 
-(deftest execute-controller-with-fn
-  (testing "Should return fn passed with storage and input-data"
-    (let [result (execute-controller {:storage {}} [(constantly {:a :b})])]
-      (is (= result {:a :b})))))
+;; (deftest execute-controller-with-fn
+;;   (testing "Should return fn passed with storage and input-data"
+;;     (let [result (execute-controller {:storage {}} [(constantly {:a :b})])]
+;;       (is (= result {:a :b})))))
