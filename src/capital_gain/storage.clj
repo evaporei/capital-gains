@@ -2,9 +2,7 @@
  
 (defprotocol Storage
   "Protocol for saving/retrieving data from a Storage."
-  (insert-key! [this new-key new-value] "Inserts value in key of Storage.")
+  (set-key! [this new-key new-value] "Sets value in key of Storage.")
   (update-key! [this k update-fn] "Updates via custom fn a key's value of Storage.")
-  (get-key [this k] "Gets key of Storage.")
-  (get-key-with-default [this k default] "Gets key with default of Storage.")
-  (has-key? [this k] "Checks if key exists in Storage.")
+  (get-key [this k default] "Gets key of Storage.")
   (clear! [this] "Clears the storage so it's empty"))

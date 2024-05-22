@@ -5,17 +5,17 @@
   "Fetch all previous data from database, aka quantity, unit-price and weighted average.
   Defaults all to zero if db is empty."
   [storage]
-  {:quantity (storage/get-key-with-default storage :quantity 0)
-   :weighted-avg (storage/get-key-with-default storage :weighted-avg 0)
-   :loss (storage/get-key-with-default storage :loss 0)})
+  {:quantity (storage/get-key storage :quantity 0)
+   :weighted-avg (storage/get-key storage :weighted-avg 0)
+   :loss (storage/get-key storage :loss 0)})
 
 (defn save-purchase!
   [storage stock]
-  (storage/insert-key! storage :weighted-avg (:weighted-avg stock))
+  (storage/set-key! storage :weighted-avg (:weighted-avg stock))
   (storage/update-key! storage :quantity #(+ (or % 0)
                                              (:quantity stock))))
 
 (defn save-loss!
   [storage loss stock]
-  (storage/insert-key! storage :loss loss)
+  (storage/set-key! storage :loss loss)
   (storage/update-key! storage :quantity #(- % (:quantity stock))))
