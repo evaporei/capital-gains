@@ -10,13 +10,13 @@
 
 (defn save-purchase!
   "Updates weighted average and adds new quantity bought."
-  [storage stock]
-  (storage/set-key! storage :weighted-avg (:weighted-avg stock))
+  [storage trade]
+  (storage/set-key! storage :weighted-avg (:weighted-avg trade))
   (storage/update-key! storage :quantity #(+ (or % 0)
-                                             (:quantity stock))))
+                                             (:quantity trade))))
 
 (defn save-loss!
   "Updates loss and subtracts new quantity sold."
-  [storage loss stock]
+  [storage loss trade]
   (storage/set-key! storage :loss loss)
-  (storage/update-key! storage :quantity #(- % (:quantity stock))))
+  (storage/update-key! storage :quantity #(- % (:quantity trade))))

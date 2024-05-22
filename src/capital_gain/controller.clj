@@ -26,15 +26,11 @@
     (db/save-loss! storage loss trade)
     {:tax tax}))
 
-;; review
 (defn execute-controller
   "Executes controller with storage and user input."
   [storage controller-and-input]
-  (let [[controller input-data] controller-and-input
-        res (controller storage input-data)]
-    (print "db-state ")
-    (println (deref (:storage storage)))
-    res))
+  (let [[controller input-data] controller-and-input]
+        (controller storage input-data)))
 
 (defn routing
   "Routes to appropriate controller based of map key."
@@ -44,15 +40,11 @@
     "sell" [sell-stocks trade]
     [(constantly nil) trade]))
 
-(defn tap [x] (print "operations ") (println x) x)
-
 (defn controller
   "Adapts and routes the user input to the correct controller, and executes it.
   It returns a JSON string with the result."
   [storage input]
   (->> input
        adapters/json->edn
-       tap
-       ;; ewww
        (map (comp (partial execute-controller storage) routing))
        adapters/edn->json))
