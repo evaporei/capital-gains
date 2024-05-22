@@ -4,26 +4,26 @@
             [capital-gain.database :as db]))
 
 (defn buy-stocks
-  "Buy stocks"
+  "Buy stocks controller"
   [storage trade]
-  (let [curr (db/get-all storage)
-        new-weighted-avg (logic/calculate-weighted-avg curr trade)]
-    (db/save-stock! storage {:quantity (:quantity trade)
-                             :weighted-avg new-weighted-avg})
+  (let [curr-state (db/get-state storage)
+        new-weighted-avg (logic/calculate-weighted-avg curr-state trade)]
+    (db/save-purchase! storage {:quantity (:quantity trade)
+                                :weighted-avg new-weighted-avg})
     {:tax 0}))
 
 (defn sell-stocks
-  "Sell stocks"
+  "Sell stocks controller"
   [storage trade]
   (let [{weighted-avg :weighted-avg
-         loss :loss} (db/get-all storage)
+         loss :loss} (db/get-state storage)
         new-cost (:unit-cost trade)
         {tax :tax
-         loss :new-loss} (logic/sell-stock weighted-avg
-                                           new-cost
-                                           loss
-                                           (:quantity trade))]
-    (db/sell-stock! storage loss trade)
+         loss :new-loss} (logic/calculate-loss weighted-avg
+                                               new-cost
+                                               loss
+                                               (:quantity trade))]
+    (db/save-loss! storage loss trade)
     {:tax tax}))
 
 ;; review
@@ -32,6 +32,7 @@
   [storage controller-and-input]
   (let [[controller input-data] controller-and-input
         res (controller storage input-data)]
+      (print "db-state ")
       (println (deref (:storage storage)))
       res))
 
@@ -43,12 +44,15 @@
     "sell" [sell-stocks trade]
     [(constantly nil) trade]))
 
+(defn tap [x] (print "operations ") (println x) x)
+
 (defn controller
   "Adapts and routes the user input to the correct controller, and executes it.
   It returns the JSON string just as it received."
   [storage input]
   (->> input
        adapters/json->edn
+       tap
        ;; ewww
        (map (comp (partial execute-controller storage) routing))
        adapters/edn->json))

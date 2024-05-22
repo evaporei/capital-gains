@@ -1,10 +1,9 @@
 (ns capital-gain.business-logic)
 
 (defn calculate-weighted-avg
-  "new-weighted-avg = ((curr-quantity * curr-weighted-avg) + (new-quantity * new-unit-price)) / (curr-quantity + new-quantity)"
-  [curr trade]
-  (let [curr-quantity (:quantity curr)
-        curr-weighted-avg (:weighted-avg curr)
+  [curr-state trade]
+  (let [curr-quantity (:quantity curr-state)
+        curr-weighted-avg (:weighted-avg curr-state)
         new-quantity (:quantity trade)
         new-unit-cost (:unit-cost trade)]
     (/ (+ (* curr-quantity curr-weighted-avg) (* new-quantity new-unit-cost))
@@ -17,7 +16,7 @@
       (* (- profit loss) 0.2)
       0)))
 
-(defn sell-stock
+(defn calculate-loss
   [weighted-avg new-cost loss quantity]
   (let [total-amount (* new-cost quantity)
         profit (* quantity (- new-cost weighted-avg))]

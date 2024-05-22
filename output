@@ -1,0 +1,88 @@
+resources/case_0.json
+operations [{:operation buy, :unit-cost 10.0, :quantity 10000} {:operation sell, :unit-cost 20.0, :quantity 5000}]
+db-state {:weighted-avg 10.0, :quantity 10000}
+db-state {:weighted-avg 10.0, :quantity 5000, :loss 0}
+[{"tax":0},{"tax":10000.0}]
+operations [{:operation buy, :unit-cost 20.0, :quantity 10000} {:operation sell, :unit-cost 10.0, :quantity 5000}]
+db-state {:weighted-avg 20.0, :quantity 10000}
+db-state {:weighted-avg 20.0, :quantity 5000, :loss 50000.0}
+[{"tax":0},{"tax":0}]
+
+resources/case_1.json
+operations [{:operation buy, :unit-cost 10.0, :quantity 100} {:operation sell, :unit-cost 15.0, :quantity 50} {:operation sell, :unit-cost 15.0, :quantity 50}]
+db-state {:weighted-avg 10.0, :quantity 100}
+db-state {:weighted-avg 10.0, :quantity 50, :loss 0}
+db-state {:weighted-avg 10.0, :quantity 0, :loss 0}
+[{"tax":0},{"tax":0},{"tax":0}]
+
+resources/case_12.json
+operations [{:operation buy, :unit-cost 10.0, :quantity 100} {:operation sell, :unit-cost 15.0, :quantity 50} {:operation sell, :unit-cost 15.0, :quantity 50}]
+db-state {:weighted-avg 10.0, :quantity 100}
+db-state {:weighted-avg 10.0, :quantity 50, :loss 0}
+db-state {:weighted-avg 10.0, :quantity 0, :loss 0}
+[{"tax":0},{"tax":0},{"tax":0}]
+operations [{:operation buy, :unit-cost 10.0, :quantity 10000} {:operation sell, :unit-cost 20.0, :quantity 5000} {:operation sell, :unit-cost 5.0, :quantity 5000}]
+db-state {:weighted-avg 10.0, :quantity 10000}
+db-state {:weighted-avg 10.0, :quantity 5000, :loss 0}
+db-state {:weighted-avg 10.0, :quantity 0, :loss 25000.0}
+[{"tax":0},{"tax":10000.0},{"tax":0}]
+
+resources/case_2.json
+operations [{:operation buy, :unit-cost 10.0, :quantity 10000} {:operation sell, :unit-cost 20.0, :quantity 5000} {:operation sell, :unit-cost 5.0, :quantity 5000}]
+db-state {:weighted-avg 10.0, :quantity 10000}
+db-state {:weighted-avg 10.0, :quantity 5000, :loss 0}
+db-state {:weighted-avg 10.0, :quantity 0, :loss 25000.0}
+[{"tax":0},{"tax":10000.0},{"tax":0}]
+
+resources/case_3.json
+operations [{:operation buy, :unit-cost 10.0, :quantity 10000} {:operation sell, :unit-cost 5.0, :quantity 5000} {:operation sell, :unit-cost 20.0, :quantity 3000}]
+db-state {:weighted-avg 10.0, :quantity 10000}
+db-state {:weighted-avg 10.0, :quantity 5000, :loss 25000.0}
+db-state {:weighted-avg 10.0, :quantity 2000, :loss 0}
+[{"tax":0},{"tax":0},{"tax":1000.0}]
+
+resources/case_4.json
+operations [{:operation buy, :unit-cost 10.0, :quantity 10000} {:operation buy, :unit-cost 25.0, :quantity 5000} {:operation sell, :unit-cost 15.0, :quantity 10000}]
+db-state {:weighted-avg 10.0, :quantity 10000}
+db-state {:weighted-avg 15.0, :quantity 15000}
+db-state {:weighted-avg 15.0, :quantity 5000, :loss 0.0}
+[{"tax":0},{"tax":0},{"tax":0}]
+
+resources/case_5.json
+operations [{:operation buy, :unit-cost 10.0, :quantity 10000} {:operation buy, :unit-cost 25.0, :quantity 5000} {:operation sell, :unit-cost 15.0, :quantity 10000} {:operation sell, :unit-cost 25.0, :quantity 5000}]
+db-state {:weighted-avg 10.0, :quantity 10000}
+db-state {:weighted-avg 15.0, :quantity 15000}
+db-state {:weighted-avg 15.0, :quantity 5000, :loss 0.0}
+db-state {:weighted-avg 15.0, :quantity 0, :loss 0}
+[{"tax":0},{"tax":0},{"tax":0},{"tax":10000.0}]
+
+resources/case_6.json
+operations [{:operation buy, :unit-cost 10.0, :quantity 10000} {:operation sell, :unit-cost 2.0, :quantity 5000} {:operation sell, :unit-cost 20.0, :quantity 2000} {:operation sell, :unit-cost 20.0, :quantity 2000} {:operation sell, :unit-cost 25.0, :quantity 1000}]
+db-state {:weighted-avg 10.0, :quantity 10000}
+db-state {:weighted-avg 10.0, :quantity 5000, :loss 40000.0}
+db-state {:weighted-avg 10.0, :quantity 3000, :loss 20000.0}
+db-state {:weighted-avg 10.0, :quantity 1000, :loss 0}
+db-state {:weighted-avg 10.0, :quantity 0, :loss 0}
+[{"tax":0},{"tax":0},{"tax":0},{"tax":0.0},{"tax":3000.0}]
+
+resources/case_7.json
+operations [{:operation buy, :unit-cost 10.0, :quantity 10000} {:operation sell, :unit-cost 2.0, :quantity 5000} {:operation sell, :unit-cost 20.0, :quantity 2000} {:operation sell, :unit-cost 20.0, :quantity 2000} {:operation sell, :unit-cost 25.0, :quantity 1000} {:operation buy, :unit-cost 20.0, :quantity 10000} {:operation sell, :unit-cost 15.0, :quantity 5000} {:operation sell, :unit-cost 30.0, :quantity 4350} {:operation sell, :unit-cost 30.0, :quantity 650}]
+db-state {:weighted-avg 10.0, :quantity 10000}
+db-state {:weighted-avg 10.0, :quantity 5000, :loss 40000.0}
+db-state {:weighted-avg 10.0, :quantity 3000, :loss 20000.0}
+db-state {:weighted-avg 10.0, :quantity 1000, :loss 0}
+db-state {:weighted-avg 10.0, :quantity 0, :loss 0}
+db-state {:weighted-avg 20.0, :quantity 10000, :loss 0}
+db-state {:weighted-avg 20.0, :quantity 5000, :loss 25000.0}
+db-state {:weighted-avg 20.0, :quantity 650, :loss 0}
+db-state {:weighted-avg 20.0, :quantity 0, :loss 0}
+[{"tax":0},{"tax":0},{"tax":0},{"tax":0.0},{"tax":3000.0},{"tax":0},{"tax":0},{"tax":3700.0},{"tax":0}]
+
+resources/case_8.json
+operations [{:operation buy, :unit-cost 10.0, :quantity 10000} {:operation sell, :unit-cost 50.0, :quantity 10000} {:operation buy, :unit-cost 20.0, :quantity 10000} {:operation sell, :unit-cost 50.0, :quantity 10000}]
+db-state {:weighted-avg 10.0, :quantity 10000}
+db-state {:weighted-avg 10.0, :quantity 0, :loss 0}
+db-state {:weighted-avg 20.0, :quantity 10000, :loss 0}
+db-state {:weighted-avg 20.0, :quantity 0, :loss 0}
+[{"tax":0},{"tax":80000.0},{"tax":0},{"tax":60000.0}]
+
