@@ -25,6 +25,4 @@
        :tax 0}
       ;; overcome prev loss, pay tax
       {:new-loss 0
-       :tax (calculate-tax total-amount 
-                           profit
-                           loss)})))
+       :tax (calculate-tax total-amount profit loss)})))
