@@ -183,11 +183,11 @@
           expected "[{\"tax\":0},{\"tax\":10000.0}]\n"]
       (is (= (controller storage operations) expected)))))
 
-(deftest routing-create-account
+(deftest routing-buy-stocks
   (testing "Should return buy-stocks along with input-data"
     (is (= (routing {:operation "buy"}) [buy-stocks {:operation "buy"}]))))
 
-(deftest routing-authorize-transaction
+(deftest routing-sell-stocks
   (testing "Should return sell-stocks along with input-data"
     (is (= (routing {:operation "sell"}) [sell-stocks {:operation "sell"}]))))
 
