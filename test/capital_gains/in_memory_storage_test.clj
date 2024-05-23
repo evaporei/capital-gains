@@ -1,7 +1,7 @@
-(ns capital-gain.in-memory-storage-test
+(ns capital-gains.in-memory-storage-test
   (:require [clojure.test :refer [deftest is testing]]
-            [capital-gain.storage :as storage]
-            [capital-gain.in-memory-storage :refer [new-in-memory-storage]]))
+            [capital-gains.storage :as storage]
+            [capital-gains.in-memory-storage :refer [new-in-memory-storage]]))
 
 (defn get-internal-storage [in-memory-storage]
   @(:storage in-memory-storage))

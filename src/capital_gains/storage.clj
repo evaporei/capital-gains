@@ -1,4 +1,4 @@
-(ns capital-gain.storage)
+(ns capital-gains.storage)
 
 (defprotocol Storage
   "Protocol for saving/retrieving data from a Storage."

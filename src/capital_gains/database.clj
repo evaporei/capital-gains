@@ -1,5 +1,5 @@
-(ns capital-gain.database
-  (:require [capital-gain.storage :as storage]))
+(ns capital-gains.database
+  (:require [capital-gains.storage :as storage]))
 
 (defn get-state
   "Fetch the database state, defaults keys to 0 if not present."

@@ -1,5 +1,5 @@
 FROM clojure AS base
-WORKDIR /capital-gain
+WORKDIR /capital-gains
 COPY project.clj project.clj
 RUN lein deps
 COPY src src

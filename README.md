@@ -1,6 +1,6 @@
-# capital-gain
+# capital-gains
 
-Nubank's Capital Gain Code Challenge.
+Nubank's Capital Gains Code Challenge.
 
 ## Table of Contents
 

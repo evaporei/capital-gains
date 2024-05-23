@@ -1,12 +1,12 @@
-(ns capital-gain.controller-test
+(ns capital-gains.controller-test
   (:require [clojure.test :refer [deftest is testing]]
-            [capital-gain.controller :refer [controller
+            [capital-gains.controller :refer [controller
                                              buy-stocks
                                              sell-stocks 
                                              execute-controller
                                              routing]]
-            [capital-gain.database :as db]
-            [capital-gain.in-memory-storage :refer [new-in-memory-storage]]))
+            [capital-gains.database :as db]
+            [capital-gains.in-memory-storage :refer [new-in-memory-storage]]))
 
 (deftest case-1
   (testing "Should perform all trade operations and save it on storage"

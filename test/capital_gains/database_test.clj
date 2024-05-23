@@ -1,7 +1,7 @@
-(ns capital-gain.database-test
+(ns capital-gains.database-test
   (:require [clojure.test :refer [deftest is testing]]
-            [capital-gain.database :as db]
-            [capital-gain.in-memory-storage :refer [new-in-memory-storage]]))
+            [capital-gains.database :as db]
+            [capital-gains.in-memory-storage :refer [new-in-memory-storage]]))
 
 (def sample-state {:weighted-avg 10.0, :quantity 10000, :loss 0})
 

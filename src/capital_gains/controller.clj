@@ -1,7 +1,7 @@
-(ns capital-gain.controller
-  (:require [capital-gain.business-logic :as logic]
-            [capital-gain.adapters :as adapters]
-            [capital-gain.database :as db]))
+(ns capital-gains.controller
+  (:require [capital-gains.business-logic :as logic]
+            [capital-gains.adapters :as adapters]
+            [capital-gains.database :as db]))
 
 (defn buy-stocks
   "Buy stocks controller."

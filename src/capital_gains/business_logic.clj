@@ -1,4 +1,4 @@
-(ns capital-gain.business-logic)
+(ns capital-gains.business-logic)
 
 (defn calculate-weighted-avg
   [curr-state trade]

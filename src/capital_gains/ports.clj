@@ -1,8 +1,8 @@
-(ns capital-gain.ports
+(ns capital-gains.ports
   (:require [clojure.string :refer [includes?]]
-            [capital-gain.controller :refer [controller]]
-            [capital-gain.in-memory-storage :refer [new-in-memory-storage]]
-            [capital-gain.storage :as storage]))
+            [capital-gains.controller :refer [controller]]
+            [capital-gains.in-memory-storage :refer [new-in-memory-storage]]
+            [capital-gains.storage :as storage]))
 
 (defn cli-stdin!
   "Receives via stdin the user input line by line and

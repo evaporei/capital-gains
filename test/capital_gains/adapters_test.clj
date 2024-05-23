@@ -1,6 +1,6 @@
-(ns capital-gain.adapters-test
+(ns capital-gains.adapters-test
   (:require [clojure.test :refer [deftest is testing]]
-            [capital-gain.adapters :refer [json->edn edn->json]]))
+            [capital-gains.adapters :refer [json->edn edn->json]]))
 
 (deftest json-to-edn-simple
   (testing "Should return simple EDN structure"

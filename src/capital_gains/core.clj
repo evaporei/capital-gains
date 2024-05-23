@@ -1,6 +1,6 @@
-(ns capital-gain.core
+(ns capital-gains.core
   (:gen-class)
-  (:require [capital-gain.ports :as ports]))
+  (:require [capital-gains.ports :as ports]))
 
 (defn -main
   "Starts the application via CLI with stdin."

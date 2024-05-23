@@ -1,6 +1,6 @@
-(ns capital-gain.business-logic-test
+(ns capital-gains.business-logic-test
   (:require [clojure.test :refer [deftest is testing]]
-            [capital-gain.business-logic :refer [calculate-weighted-avg
+            [capital-gains.business-logic :refer [calculate-weighted-avg
                                                  calculate-tax
                                                  calculate-loss]]))
 

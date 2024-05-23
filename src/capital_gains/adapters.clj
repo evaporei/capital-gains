@@ -1,4 +1,4 @@
-(ns capital-gain.adapters
+(ns capital-gains.adapters
   (:require [clojure.data.json :as json]))
 
 (defn json->edn

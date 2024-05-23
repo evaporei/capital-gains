@@ -1,5 +1,5 @@
-(ns capital-gain.in-memory-storage
-  (:require [capital-gain.storage :refer [Storage]]))
+(ns capital-gains.in-memory-storage
+  (:require [capital-gains.storage :refer [Storage]]))
 
 (defrecord InMemoryStorage [storage]
   Storage
