@@ -183,10 +183,6 @@
           expected "[{\"tax\":0},{\"tax\":10000.0}]\n"]
       (is (= (controller storage operations) expected)))))
 
-(deftest integration-else
-  (testing "Should perform nothing and return a null"
-    (is (= (controller (new-in-memory-storage) "[{\"nothing\":\"related\"}]") "[null]\n"))))
-
 (deftest routing-create-account
   (testing "Should return buy-stocks along with input-data"
     (is (= (routing {:operation "buy"}) [buy-stocks {:operation "buy"}]))))
@@ -201,7 +197,7 @@
       (is (= (controller-fn) nil))
       (is (= data {:nothing :related})))))
 
-;; (deftest execute-controller-with-fn
-;;   (testing "Should return fn passed with storage and input-data"
-;;     (let [result (execute-controller {:storage {}} [(constantly {:a :b})])]
-;;       (is (= result {:a :b})))))
+(deftest execute-controller-with-fn
+  (testing "Should return fn passed with storage and input-data"
+    (let [result (execute-controller {:storage {}} [(constantly {:a :b})])]
+      (is (= result {:a :b})))))

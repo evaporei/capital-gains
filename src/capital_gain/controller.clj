@@ -30,7 +30,7 @@
   "Executes controller with storage and user input."
   [storage controller-and-input]
   (let [[controller input-data] controller-and-input]
-        (controller storage input-data)))
+    (controller storage input-data)))
 
 (defn routing
   "Routes to appropriate controller based of map key."
